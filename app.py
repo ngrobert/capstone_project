@@ -6,11 +6,6 @@ from .models import setup_db, db_drop_and_create_all, Movie, Actor
 from .auth import AuthError, requires_auth
 
 
-app = Flask(__name__)
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
-
-
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__)

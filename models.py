@@ -8,8 +8,7 @@ db = SQLAlchemy()
 
 
 '''
-setup_db(app)
-    binds a flask application and a SQLAlchemy service
+Initializes the database
 '''
 def setup_db(app):
     app.config["SQLALCHEMY_DATABASE_URI"] = "postgres://localhost:5432/castingagency"
