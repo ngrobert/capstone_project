@@ -1,10 +1,18 @@
+print("models")
+
 import os
+# import sys
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy import Column, String, Integer, create_engine
 from flask_sqlalchemy import SQLAlchemy
 import json
+#
+# print("sys.path", sys.path)
+# sys.path.append('./')
 
 db = SQLAlchemy()
+
+
 
 
 '''
