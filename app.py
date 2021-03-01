@@ -9,6 +9,7 @@ from .models import setup_db, db_drop_and_create_all, Movie, Actor
 from .auth import AuthError, requires_auth
 
 
+print("sys", sys)
 print("sys.path", sys.path)
 sys.path.append('./')
 
@@ -209,6 +210,8 @@ def create_app(test_config=None):
         response = jsonify(ex.error)
         response.status_code = ex.status_code
         return response
+
+    return app
 
 app = create_app()
 
