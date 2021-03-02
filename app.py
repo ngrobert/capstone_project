@@ -9,11 +9,6 @@ from .models import setup_db, db_drop_and_create_all, Movie, Actor
 from .auth import AuthError, requires_auth
 
 
-print("sys", sys)
-print("sys.path", sys.path)
-sys.path.append('./')
-
-
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__)
@@ -31,8 +26,10 @@ def create_app(test_config=None):
         """
         Return all movies
         """
-        movies = Movie.query.order_by(Movie.id).all()
-        movies = [movie.type for movie in movies]
+        all_movies = Movie.query.order_by(Movie.id).all()
+        movies = [movie.title for movie in all_movies]
+        print("movies", movies)
+
         try:
             if len(movies) == 0:
                 abort(404)
@@ -151,6 +148,27 @@ def create_app(test_config=None):
 
         except Exception as e:
             print(e)
+            abort(422)
+
+    @app.route('/actors')
+    def get_actors():
+        """
+        Return all actors
+        """
+        all_actors = Actor.query.order_by(Actor.id).all()
+        actors = [actor.name for actor in all_actors]
+        print("actors", actors)
+
+        try:
+            if len(actors) == 0:
+                abort(404)
+
+            return jsonify({
+                'success': True,
+                'actors': actors,
+            })
+
+        except:  # noqa
             abort(422)
 
 

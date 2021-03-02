@@ -9,8 +9,6 @@ import json
 db = SQLAlchemy()
 
 
-
-
 '''
 Initializes the database
 '''
