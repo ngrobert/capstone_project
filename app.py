@@ -1,5 +1,3 @@
-print("app")
-
 import os
 import sys
 from flask import Flask, request, abort, jsonify
@@ -14,6 +12,7 @@ def create_app(test_config=None):
     app = Flask(__name__)
     setup_db(app)
 
+
     @app.route("/")
     def handler():
         return jsonify({
@@ -21,13 +20,18 @@ def create_app(test_config=None):
         })
 
 
+    """
+    Movies Endpoints
+    """
     @app.route('/movies')
-    def get_movies():
+    @requires_auth('get:movies')
+    # @requires_auth decorator passes token argument when calling respective method
+    def get_movies(token):
         """
         Return all movies
         """
-        all_movies = Movie.query.order_by(Movie.id).all()
-        movies = [movie.title for movie in all_movies]
+        all_movies = Movie.query.all()
+        movies = [movie.format() for movie in all_movies]
         print("movies", movies)
 
         try:
@@ -39,44 +43,28 @@ def create_app(test_config=None):
                 'movies': movies,
             })
 
-        except:  # noqa
+        except:
             abort(422)
-
-    @app.route("/movies-detail")
-    @requires_auth("get:movies-detail")
-    def get_movies_detail(token):
-        try:
-            movies = [movie.long() for movie in Movie.query.all()]
-            return jsonify({
-                "success": True,
-                "movies": movies
-            })
-        except Exception:
-            abort(422)
-
-
-    '''
-    @TODO implement endpoint
-        POST /movies
-            it should create a new row in the movies table
-            it should require the 'post:movies' permission
-            it should contain the movie.long() data representation
-        returns status code 200 and json {"success": True, "movies": movie}
-        where movie an array containing only the newly created movie or
-        appropriate status code indicating reason for failure
-    '''
 
 
     @app.route('/movies', methods=['POST'])
     @requires_auth('post:movies')
-    def create_movie(token):
+    def add_movie(token):
+        """
+        Adds new movie to the database
+        """
+        # parse data as json
         if request.data:
             try:
-                new_movie_data = json.loads(request.data.decode("utf-8"))
-                new_movie = Movie(title=new_movie_data["title"],
-                                  release_date=json.dumps(new_movie_data["release_date"]))
-                Movie.insert(new_movie)
-                movie = list(map(Movie.long, Movie.query.all()))
+                new_movie_data = request.get_json('movie')
+                print("new_movie_data", new_movie_data)
+                title = new_actor_data["title"]
+                release_date = new_actor_data["release_date"]
+
+                movie_db = Movie(title, release_date)
+                movie_db.insert()
+                movie = [movie_db.format()]
+                print("movie", movie)
                 return jsonify({
                     "success": True,
                     "movies": movie
@@ -85,78 +73,64 @@ def create_app(test_config=None):
                 abort(422)
 
 
-    '''
-    @TODO implement endpoint
-        PATCH /movies/<id>
-            where <id> is the existing model id
-            it should respond with a 404 error if <id> is not found
-            it should update the corresponding row for <id>
-            it should require the 'patch:movies' permission
-            it should contain the movie.long() data representation
-        returns status code 200 and json {"success": True, "movies": movie}
-        where movie an array containing only the updated movie or
-        appropriate status code indicating reason for failure
-    '''
-
-
     @app.route('/movies/<int:movie_id>', methods=['PATCH'])
     @requires_auth('patch:movies')
     def update_movie(token, movie_id):
+        """
+        Update movie information
+        """
         try:
-            # force ignores the mimetype and always try to parse JSON
             body = request.get_json(force=True)
-            title = body.get("title", None)
-            release_date = body.get("release_date", None)
-            movie = Movie.query.filter(Movie.id == movie_id).one_or_none()
+            movie = movie.query.filter(movie.id == movie_id).one_or_none()
+
+            title = body["title"] if "title" in body else movie.title
+            release_date = body["release_date"] if "release_date" in body else movie.release_date
+
             movie.title = title
-            movie.release_date = json.dumps(release_date)
+            movie.release_date = release_date
             movie.update()
+
             return jsonify({
                 "success": True,
-                "movies": [movie.long()]
+                "movies": [movie.format()]
             })
+
         except Exception as e:
             print(e)
             abort(422)
-
-
-    '''
-    @TODO implement endpoint
-        DELETE /movies/<id>
-            where <id> is the existing model id
-            it should respond with a 404 error if <id> is not found
-            it should delete the corresponding row for <id>
-            it should require the 'delete:movies' permission
-        returns status code 200 and json {"success": True, "delete": id} where
-        id is the id of the deleted record or appropriate status code indicating
-        reason for failure
-    '''
 
 
     @app.route('/movies/<int:movie_id>', methods=['DELETE'])
     @requires_auth('delete:movies')
     def delete_movie(token, movie_id):
+        """
+        Remove movie from database
+        """
         try:
             movie = Movie.query.filter(Movie.id == movie_id).one_or_none()
-            if movie is None:
-                abort(404)
             movie.delete()
+
             return jsonify({
-                "success": True,
-                "delete": movie_id
+                'success': True,
+                'delete': movie_id
             })
 
         except Exception as e:
-            print(e)
+            print(sys.exc_info())
             abort(422)
 
+
+    """
+    Actors Endpoints
+    """
     @app.route('/actors')
-    def get_actors():
+    @requires_auth('get:actors')
+    def get_actors(token):
         """
         Return all actors
         """
-        all_actors = Actor.query.order_by(Actor.id).all()
-        actors = [actor.name for actor in all_actors]
+        all_actors = Actor.query.all()
+        actors = [actor.format() for actor in all_actors]
         print("actors", actors)
 
         try:
@@ -172,12 +146,84 @@ def create_app(test_config=None):
             abort(422)
 
 
+    @app.route('/actors', methods=['POST'])
+    @requires_auth('post:actors')
+    def add_actor(token):
+        """
+        Adds new actor to the database
+        """
+        # parse data as json
+        if request.data:
+            try:
+                new_actor_data = request.get_json('actor')
+                print("new_actor_data", new_actor_data)
+                name = new_actor_data["name"]
+                age = new_actor_data["age"]
+                gender = new_actor_data["gender"]
+
+                actor_db = Actor(name, age, gender)
+                actor_db.insert()
+                actor = [actor_db.format()]
+                print("actor", actor)
+                return jsonify({
+                    "success": True,
+                    "actors": actor
+                })
+            except BaseException:
+                abort(422)
+
+
+    @app.route('/actors/<int:actor_id>', methods=['PATCH'])
+    @requires_auth('patch:actors')
+    def update_actor(token, actor_id):
+        """
+        Update actor information
+        """
+        try:
+            body = request.get_json(force=True)
+            actor = Actor.query.filter(Actor.id == actor_id).one_or_none()
+
+            name = body["name"] if "name" in body else actor.name
+            age = body["age"] if "age" in body else actor.age
+            gender = body["gender"] if "gender" in body else actor.gender
+
+            actor.name = name
+            actor.age = age
+            actor.gender = gender
+            actor.update()
+
+            return jsonify({
+                "success": True,
+                "actors": [actor.format()]
+            })
+
+        except Exception as e:
+            print(e)
+            abort(422)
+
+
+    @app.route('/actors/<int:actor_id>', methods=['DELETE'])
+    @requires_auth('delete:actors')
+    def delete_actor(token, actor_id):
+        """
+        Remove actor from database
+        """
+
+        try:
+            actor = Actor.query.filter(Actor.id == actor_id).one_or_none()
+            actor.delete()
+
+            return jsonify({
+                'success': True,
+                'delete': actor_id
+            })
+
+        except Exception as e:
+            print(sys.exc_info())
+            abort(422)
+
+
     # Error Handling
-    '''
-    Example error handling for unprocessable entity
-    '''
-
-
     @app.errorhandler(422)
     def unprocessable_entity(error):
         return jsonify({
@@ -187,24 +233,6 @@ def create_app(test_config=None):
         }), 422
 
 
-    '''
-    @TODO implement error handlers using the @app.errorhandler(error) decorator
-        each error handler should return (with approprate messages):
-                 jsonify({
-                        "success": False,
-                        "error": 404,
-                        "message": "resource not found"
-                        }), 404
-    
-    '''
-
-
-    '''
-    @TODO implement error handler for 404
-        error handler should conform to general task above
-    '''
-
-
     @app.errorhandler(404)
     def resource_not_found(error):
         return jsonify({
@@ -212,12 +240,6 @@ def create_app(test_config=None):
             "error": 404,
             "message": "resource not found"
         }), 404
-
-
-    '''
-    @TODO implement error handler for AuthError
-        error handler should conform to general task above
-    '''
 
 
     @app.errorhandler(AuthError)

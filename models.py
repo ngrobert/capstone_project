@@ -1,5 +1,3 @@
-print("models")
-
 import os
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy import Column, String, Integer, create_engine
