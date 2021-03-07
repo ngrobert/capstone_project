@@ -2,16 +2,16 @@ import os
 import sys
 from flask import Flask, request, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
 from .models import setup_db, db_drop_and_create_all, Movie, Actor
 from .auth import AuthError, requires_auth
+# from models import setup_db, db_drop_and_create_all, Movie, Actor
+# from auth import AuthError, requires_auth
 
 
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__)
     setup_db(app)
-
 
     @app.route("/")
     def handler():
@@ -53,9 +53,11 @@ def create_app(test_config=None):
         """
         Adds new movie to the database
         """
-        # parse data as json
         if request.data:
+            print("request", request)
+            print("request.data", request.data)
             try:
+                # parse data as json
                 new_movie_data = request.get_json('movie')
                 print("new_movie_data", new_movie_data)
                 title = new_actor_data["title"]
@@ -81,7 +83,7 @@ def create_app(test_config=None):
         """
         try:
             body = request.get_json(force=True)
-            movie = movie.query.filter(movie.id == movie_id).one_or_none()
+            movie = Movie.query.filter(Movie.id == movie_id).one_or_none()
 
             title = body["title"] if "title" in body else movie.title
             release_date = body["release_date"] if "release_date" in body else movie.release_date
@@ -152,9 +154,9 @@ def create_app(test_config=None):
         """
         Adds new actor to the database
         """
-        # parse data as json
         if request.data:
             try:
+                # parse data as json
                 new_actor_data = request.get_json('actor')
                 print("new_actor_data", new_actor_data)
                 name = new_actor_data["name"]

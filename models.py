@@ -4,35 +4,38 @@ from sqlalchemy import Column, String, Integer, create_engine
 from flask_sqlalchemy import SQLAlchemy
 import json
 
+
+database_name = "castingagency"
+database_path = "postgres://{}/{}".format('localhost:5432', database_name)
 db = SQLAlchemy()
 
 
-'''
-Initializes the database
-'''
-def setup_db(app):
-    app.config["SQLALCHEMY_DATABASE_URI"] = "postgres://localhost:5432/castingagency"
+def setup_db(app, database_path=database_path):
+    """
+    Initializes database
+    """
+    # app.config["SQLALCHEMY_DATABASE_URI"] = "postgres://localhost:5432/castingagency"
+    app.config["SQLALCHEMY_DATABASE_URI"] = database_path
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.app = app
     db.init_app(app)
+
+    # creates all tables
     db.create_all()
 
 
-'''
-db_drop_and_create_all()
-    drops the database tables and starts fresh
-    can be used to initialize a clean database
-    !!NOTE you can change the database_filename variable to have multiple verisons of a database
-'''
 def db_drop_and_create_all():
+    """
+    Drops database then creates it
+    """
     db.drop_all()
     db.create_all()
 
 
-'''
-movie entity, extends the base SQLAlchemy Model
-'''
 class Movie(db.Model):
+    """
+    Movie entity, extends the base SQLAlchemy Model
+    """
     __tablename__ = 'movies'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(), nullable=False)
@@ -61,10 +64,10 @@ class Movie(db.Model):
         }
 
 
-'''
-actor entity, extends the base SQLAlchemy Model
-'''
 class Actor(db.Model):
+    """
+    Actor entity, extends the base SQLAlchemy Model
+    """
     __tablename__ = 'actors'
 
     id = db.Column(db.Integer, primary_key=True)
