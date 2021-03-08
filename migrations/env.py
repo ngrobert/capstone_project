@@ -1,3 +1,6 @@
+"""
+Auto-generated env file
+"""
 from __future__ import with_statement
 
 import logging

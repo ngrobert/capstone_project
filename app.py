@@ -1,15 +1,18 @@
-import os
+"""
+Casting agency app
+"""
 import sys
 from flask import Flask, request, abort, jsonify
-from flask_sqlalchemy import SQLAlchemy
 # from .models import setup_db, db_drop_and_create_all, Movie, Actor
 # from .auth import AuthError, requires_auth
-from models import setup_db, db_drop_and_create_all, Movie, Actor
-from auth import AuthError, requires_auth
+from models import setup_db, Movie, Actor
+from auth import requires_auth, AuthError
 
 
 def create_app(test_config=None):
-    # create and configure the app
+    """
+    create and configure the app
+    """
     app = Flask(__name__)
     setup_db(app)
 
@@ -32,7 +35,6 @@ def create_app(test_config=None):
         """
         all_movies = Movie.query.all()
         movies = [movie.format() for movie in all_movies]
-        print("movies", movies)
 
         try:
             if len(movies) == 0:
@@ -59,15 +61,15 @@ def create_app(test_config=None):
                 new_movie_data = request.get_json('movie')
                 title = new_movie_data["title"]
                 release_date = new_movie_data["release_date"]
-                # print("new_movie_data", new_movie_data)
-
                 movie_db = Movie(title, release_date)
                 movie_db.insert()
                 movie = [movie_db.format()]
+
                 return jsonify({
                     "success": True,
                     "movies": movie
                 })
+
             except BaseException:
                 abort(422)
 
@@ -81,10 +83,8 @@ def create_app(test_config=None):
         try:
             body = request.get_json(force=True)
             movie = Movie.query.filter(Movie.id == movie_id).one_or_none()
-
             title = body["title"] if "title" in body else movie.title
             release_date = body["release_date"] if "release_date" in body else movie.release_date
-
             movie.title = title
             movie.release_date = release_date
             movie.update()
@@ -162,10 +162,12 @@ def create_app(test_config=None):
                 actor_db = Actor(name, age, gender)
                 actor_db.insert()
                 actor = [actor_db.format()]
+
                 return jsonify({
                     "success": True,
                     "actors": actor
                 })
+
             except BaseException:
                 abort(422)
 
@@ -179,11 +181,9 @@ def create_app(test_config=None):
         try:
             body = request.get_json(force=True)
             actor = Actor.query.filter(Actor.id == actor_id).one_or_none()
-
             name = body["name"] if "name" in body else actor.name
             age = body["age"] if "age" in body else actor.age
             gender = body["gender"] if "gender" in body else actor.gender
-
             actor.name = name
             actor.age = age
             actor.gender = gender
@@ -205,7 +205,6 @@ def create_app(test_config=None):
         """
         Remove actor from database
         """
-
         try:
             actor = Actor.query.filter(Actor.id == actor_id).one_or_none()
             actor.delete()
@@ -221,14 +220,21 @@ def create_app(test_config=None):
 
 
     # Error Handling
-    @app.errorhandler(422)
-    def unprocessable_entity(error):
+    @app.errorhandler(400)
+    def bad_request(error):
         return jsonify({
             "success": False,
-            "error": 422,
-            "message": "unprocessable entity"
-        }), 422
+            "error": 400,
+            "message": "Bad request"
+        }), 400
 
+    @app.errorhandler(401)
+    def unauthorized(error):
+        return jsonify({
+            "success": False,
+            "error": 401,
+            "message": "Unauthorized"
+        }), 401
 
     @app.errorhandler(404)
     def resource_not_found(error):
@@ -237,6 +243,14 @@ def create_app(test_config=None):
             "error": 404,
             "message": "resource not found"
         }), 404
+
+    @app.errorhandler(422)
+    def unprocessable_entity(error):
+        return jsonify({
+            "success": False,
+            "error": 422,
+            "message": "unprocessable entity"
+        }), 422
 
 
     @app.errorhandler(AuthError)

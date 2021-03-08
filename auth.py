@@ -1,8 +1,11 @@
+"""
+Authentication info
+"""
 import json
-from flask import request, _request_ctx_stack, abort
 from functools import wraps
-from jose import jwt
 from urllib.request import urlopen
+from flask import request, abort
+from jose import jwt
 
 
 AUTH0_DOMAIN = 'dev-8fxctlec.us.auth0.com'
@@ -52,8 +55,7 @@ def check_permissions(permission, payload):
             'code': 'unauthorized',
             'description': 'Permission not found.'
         }, 401)
-    else:
-        return True
+    return True
 
 
 def verify_decode_jwt(token):
@@ -116,6 +118,9 @@ def verify_decode_jwt(token):
 
 
 def requires_auth(permission=''):
+    """
+    Set up decorator
+    """
     def requires_auth_decorator(f):
         @wraps(f)
         def wrapper(*args, **kwargs):

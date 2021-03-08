@@ -1,11 +1,14 @@
-import os
+"""
+Casting agency tests
+"""
 import unittest
 import json
 from flask_sqlalchemy import SQLAlchemy
-from app import create_app
-from models import db, setup_db, Movie, Actor
+from .models import setup_db, Movie, Actor
+from .app import create_app
 
 
+# pylint: disable=too-many-instance-attributes, too-many-public-methods
 class CastingAgencyTestCase(unittest.TestCase):
     """
     Casting agency test case
@@ -20,13 +23,48 @@ class CastingAgencyTestCase(unittest.TestCase):
 
         # auth tokens for respective roles
         self.casting_assistant = {
-            "Authorization": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Im1CSk5ucHk5dlNJQXpuaU1NYUF4ViJ9.eyJpc3MiOiJodHRwczovL2Rldi04ZnhjdGxlYy51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NjA0NDMwZDAwZDlmNzEwMDcwZWU2NGM3IiwiYXVkIjoiaHR0cHM6Ly9jYXN0aW5nLWFnZW5jeS8iLCJpYXQiOjE2MTUwODE3OTQsImV4cCI6MTYxNTA4ODk5NCwiYXpwIjoiR2hyT282c3FkU2paY2txMnB1QlB2d1ZacmdrZmR5M1YiLCJzY29wZSI6IiIsInBlcm1pc3Npb25zIjpbImdldDphY3RvcnMiLCJnZXQ6bW92aWVzIl19.qLJxJlkos1ypQu3e755Hq1fARd-VSsQWd3zuakTx2b6hBkgBsu7b9DItigMHFF05OiXp1R2qkIUDkrBD3jQFTJoCKCRgtrXv4v2ZhkHuydwNaMmh8MWz_QxHFrWm4RlJbp_JMzqkDoumB0eBJ6yF1QTyFrA18ZFbf2NWk7HkLMIWA7YBiV2Tu9ksFGchVjFWmtB7T84L9z5_rtY9KEkHnbJw3W7eHE8ps1d2h1J4gzFY7PeA7GL0LtPTkjtvyu6bIHMUr5Tw6KKUg6XkF-rcIUglVeqVMgwktT7YNg05sXdmZIqAOKZA7EmLntjBqEj_jKne3rgr_XSYizQeF4PpaQ"
+            "Authorization": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Im1CSk5ucHk5dlNJ"
+                             "QXpuaU1NYUF4ViJ9.eyJpc3MiOiJodHRwczovL2Rldi04ZnhjdGxlYy51cy5hdXRoMC"
+                             "5jb20vIiwic3ViIjoiYXV0aDB8NjA0NDMwZDAwZDlmNzEwMDcwZWU2NGM3IiwiYXVkI"
+                             "joiaHR0cHM6Ly9jYXN0aW5nLWFnZW5jeS8iLCJpYXQiOjE2MTUwODE3OTQsImV4cCI6"
+                             "MTYxNTA4ODk5NCwiYXpwIjoiR2hyT282c3FkU2paY2txMnB1QlB2d1ZacmdrZmR5M1Y"
+                             "iLCJzY29wZSI6IiIsInBlcm1pc3Npb25zIjpbImdldDphY3RvcnMiLCJnZXQ6bW92aW"
+                             "VzIl19.qLJxJlkos1ypQu3e755Hq1fARd-VSsQWd3zuakTx2b6hBkgBsu7b9DItigMH"
+                             "FF05OiXp1R2qkIUDkrBD3jQFTJoCKCRgtrXv4v2ZhkHuydwNaMmh8MWz_QxHFrWm4Rl"
+                             "Jbp_JMzqkDoumB0eBJ6yF1QTyFrA18ZFbf2NWk7HkLMIWA7YBiV2Tu9ksFGchVjFWmt"
+                             "B7T84L9z5_rtY9KEkHnbJw3W7eHE8ps1d2h1J4gzFY7PeA7GL0LtPTkjtvyu6bIHMUr"
+                             "5Tw6KKUg6XkF-rcIUglVeqVMgwktT7YNg05sXdmZIqAOKZA7EmLntjBqEj_jKne3rgr"
+                             "_XSYizQeF4PpaQ"
         }
         self.casting_director = {
-            "Authorization": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Im1CSk5ucHk5dlNJQXpuaU1NYUF4ViJ9.eyJpc3MiOiJodHRwczovL2Rldi04ZnhjdGxlYy51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NWY3NzUzNWRiNDk4ZTIwMDZiOTQyNDNkIiwiYXVkIjoiaHR0cHM6Ly9jYXN0aW5nLWFnZW5jeS8iLCJpYXQiOjE2MTUwOTA1OTYsImV4cCI6MTYxNTA5Nzc5NiwiYXpwIjoiR2hyT282c3FkU2paY2txMnB1QlB2d1ZacmdrZmR5M1YiLCJzY29wZSI6IiIsInBlcm1pc3Npb25zIjpbImRlbGV0ZTphY3RvcnMiLCJnZXQ6YWN0b3JzIiwiZ2V0Om1vdmllcyIsInBhdGNoOmFjdG9ycyIsInBhdGNoOm1vdmllcyIsInBvc3Q6YWN0b3JzIl19.OFnRS8gpESVH3MGzvbiy8JuD2M9LebwGMplJR2FzyZJArgI6AmJhHAlGdin1P9mJRRw3-CCAsNAEcTpy_eTx_HM24ddKTAFCdlRUXiQJRE4yyZvgJVn4NR0wdXn8VvAIDGiHKJEDxKqSi83NWOnHztkIEbpBbEJcseXW9bP0SS3W1SMxxerxgEewmvb1T0nUdPgJTY5d9zd99a-ick6k65IlqMQH9wAd2Ka49CROHgizgC7VJmuYHDype8whC6yLG6eonuAhNDfVo40WbNX3HgDDumuXUeJJ3Z3daQ0PEkS0-lmL7XehpVv-tpuTFv5ZhXdF0XHriaTYftMsKGGQ6w"
+            "Authorization": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Im1CSk5ucHk5dlNJ"
+                             "QXpuaU1NYUF4ViJ9.eyJpc3MiOiJodHRwczovL2Rldi04ZnhjdGxlYy51cy5hdXRoMC"
+                             "5jb20vIiwic3ViIjoiYXV0aDB8NWY3NzUzNWRiNDk4ZTIwMDZiOTQyNDNkIiwiYXVkI"
+                             "joiaHR0cHM6Ly9jYXN0aW5nLWFnZW5jeS8iLCJpYXQiOjE2MTUwOTA1OTYsImV4cCI6"
+                             "MTYxNTA5Nzc5NiwiYXpwIjoiR2hyT282c3FkU2paY2txMnB1QlB2d1ZacmdrZmR5M1Y"
+                             "iLCJzY29wZSI6IiIsInBlcm1pc3Npb25zIjpbImRlbGV0ZTphY3RvcnMiLCJnZXQ6YW"
+                             "N0b3JzIiwiZ2V0Om1vdmllcyIsInBhdGNoOmFjdG9ycyIsInBhdGNoOm1vdmllcyIsI"
+                             "nBvc3Q6YWN0b3JzIl19.OFnRS8gpESVH3MGzvbiy8JuD2M9LebwGMplJR2FzyZJArgI"
+                             "6AmJhHAlGdin1P9mJRRw3-CCAsNAEcTpy_eTx_HM24ddKTAFCdlRUXiQJRE4yyZvgJV"
+                             "n4NR0wdXn8VvAIDGiHKJEDxKqSi83NWOnHztkIEbpBbEJcseXW9bP0SS3W1SMxxerxgE"
+                             "ewmvb1T0nUdPgJTY5d9zd99a-ick6k65IlqMQH9wAd2Ka49CROHgizgC7VJmuYHDype8"
+                             "whC6yLG6eonuAhNDfVo40WbNX3HgDDumuXUeJJ3Z3daQ0PEkS0-lmL7XehpVv-tpuTFv"
+                             "5ZhXdF0XHriaTYftMsKGGQ6w"
         }
         self.casting_producer = {
-            "Authorization": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Im1CSk5ucHk5dlNJQXpuaU1NYUF4ViJ9.eyJpc3MiOiJodHRwczovL2Rldi04ZnhjdGxlYy51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NWY3NzUzOWNiYmJkODIwMDY4NjlmNDZjIiwiYXVkIjoiaHR0cHM6Ly9jYXN0aW5nLWFnZW5jeS8iLCJpYXQiOjE2MTUxNTY4MjEsImV4cCI6MTYxNTIyODgyMSwiYXpwIjoiR2hyT282c3FkU2paY2txMnB1QlB2d1ZacmdrZmR5M1YiLCJzY29wZSI6IiIsInBlcm1pc3Npb25zIjpbImRlbGV0ZTphY3RvcnMiLCJkZWxldGU6bW92aWVzIiwiZ2V0OmFjdG9ycyIsImdldDptb3ZpZXMiLCJwYXRjaDphY3RvcnMiLCJwYXRjaDptb3ZpZXMiLCJwb3N0OmFjdG9ycyIsInBvc3Q6bW92aWVzIl19.WZcKzjRwdQ-L-_UVWdyxvlCIJ_NP0W9AA2CKFW6my4RUqY7d_IWcQCkY4LNXIuT5WobTAqTTQ0j1znQ9D98CjaDMx2aFLh0v3Ts8bZFPwviMCagxwB1-jJ69pO7CBCwkzcvYk8g5tuWm2ZwxbgdHMafqgAo_vPszM42zbg6HbjPw_I8CeNy9T7q3qMS3jKaEnscdQPDSx3iQwcnZk9xRyMuooP10P4k6XaHsXqO8oBtQs_Q2htDVK5D-s3gZSqrZXYtAw2falq88EhDtvK-IJHri35UVy-KZoIRYFISSH5CngFeHZqpP_03ZZ23IPBoI2lzTwYXdf4ogJ9SCDHqvgA"
+            "Authorization": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Im1CSk5ucHk5dlNJQ"
+                             "XpuaU1NYUF4ViJ9.eyJpc3MiOiJodHRwczovL2Rldi04ZnhjdGxlYy51cy5hdXRoMC5jb"
+                             "20vIiwic3ViIjoiYXV0aDB8NWY3NzUzOWNiYmJkODIwMDY4NjlmNDZjIiwiYXVkIjoia"
+                             "HR0cHM6Ly9jYXN0aW5nLWFnZW5jeS8iLCJpYXQiOjE2MTUxNTY4MjEsImV4cCI6MTYxN"
+                             "TIyODgyMSwiYXpwIjoiR2hyT282c3FkU2paY2txMnB1QlB2d1ZacmdrZmR5M1YiLCJzY"
+                             "29wZSI6IiIsInBlcm1pc3Npb25zIjpbImRlbGV0ZTphY3RvcnMiLCJkZWxldGU6bW92a"
+                             "WVzIiwiZ2V0OmFjdG9ycyIsImdldDptb3ZpZXMiLCJwYXRjaDphY3RvcnMiLCJwYXRja"
+                             "Dptb3ZpZXMiLCJwb3N0OmFjdG9ycyIsInBvc3Q6bW92aWVzIl19.WZcKzjRwdQ-L-_UV"
+                             "WdyxvlCIJ_NP0W9AA2CKFW6my4RUqY7d_IWcQCkY4LNXIuT5WobTAqTTQ0j1znQ9D98C"
+                             "jaDMx2aFLh0v3Ts8bZFPwviMCagxwB1-jJ69pO7CBCwkzcvYk8g5tuWm2ZwxbgdHMafq"
+                             "gAo_vPszM42zbg6HbjPw_I8CeNy9T7q3qMS3jKaEnscdQPDSx3iQwcnZk9xRyMuooP10"
+                             "P4k6XaHsXqO8oBtQs_Q2htDVK5D-s3gZSqrZXYtAw2falq88EhDtvK-IJHri35UVy-KZ"
+                             "oIRYFISSH5CngFeHZqpP_03ZZ23IPBoI2lzTwYXdf4ogJ9SCDHqvgA"
         }
 
         self.new_actor = {
@@ -41,15 +79,14 @@ class CastingAgencyTestCase(unittest.TestCase):
 
         # binds the app to the current context
         with self.app.app_context():
-            self.db = SQLAlchemy()
-            self.db.init_app(self.app)
+            self._db = SQLAlchemy()
+            self._db.init_app(self.app)
             # create all tables
-            self.db.create_all()
+            self._db.create_all()
 
 
     def tearDown(self):
         """Executed after reach test"""
-        pass
 
 
     # Tests for unauthorized user
@@ -100,7 +137,8 @@ class CastingAgencyTestCase(unittest.TestCase):
         """
         Tests casting assistant cannot create actor
         """
-        response = self.client().post('/actors', headers=self.casting_assistant, json=self.new_actor)
+        response = self.client().post('/actors', headers=self.casting_assistant,
+                                      json=self.new_actor)
         data = json.loads(response.data)
 
         self.assertEqual(response.status_code, 401)
@@ -111,7 +149,8 @@ class CastingAgencyTestCase(unittest.TestCase):
         """
         Tests casting assistant cannot create movies
         """
-        response = self.client().post('/movies', headers=self.casting_assistant, json=self.new_movie)
+        response = self.client().post('/movies', headers=self.casting_assistant,
+                                      json=self.new_movie)
         data = json.loads(response.data)
 
         self.assertEqual(response.status_code, 401)
@@ -122,7 +161,8 @@ class CastingAgencyTestCase(unittest.TestCase):
         """
         Tests casting assistant cannot update actor
         """
-        response = self.client().patch('/actors/1', headers=self.casting_assistant, json=self.new_actor)
+        response = self.client().patch('/actors/1', headers=self.casting_assistant,
+                                       json=self.new_actor)
         data = json.loads(response.data)
 
         self.assertEqual(response.status_code, 401)
@@ -133,7 +173,8 @@ class CastingAgencyTestCase(unittest.TestCase):
         """
         Tests casting assistant cannot update movies
         """
-        response = self.client().patch('/movies/1', headers=self.casting_assistant, json=self.new_movie)
+        response = self.client().patch('/movies/1', headers=self.casting_assistant,
+                                       json=self.new_movie)
         data = json.loads(response.data)
 
         self.assertEqual(response.status_code, 401)
@@ -365,11 +406,12 @@ class CastingAgencyTestCase(unittest.TestCase):
         """
         response = self.client().delete('/movies/2', headers=self.casting_producer)
         data = json.loads(response.data)
+        movie = Movie.query.filter(Movie.id == 25).one_or_none()
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(data['success'], True)
         self.assertEqual(data['delete'], 2)
-        self.assertEqual(actor, None)
+        self.assertEqual(movie, None)
 
 # Make the tests conveniently executable
 if __name__ == "__main__":

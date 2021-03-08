@@ -1,3 +1,6 @@
+"""
+Set up table in database
+"""
 import os
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy import Column, String, Integer, create_engine
@@ -5,16 +8,15 @@ from flask_sqlalchemy import SQLAlchemy
 import json
 
 
-database_name = "castingagency"
-database_path = "postgres://{}/{}".format('localhost:5432', database_name)
+DATABASE_NAME = "castingagency"
+DATABASE_PATH = "postgres://{}/{}".format('localhost:5432', DATABASE_NAME)
 db = SQLAlchemy()
 
 
-def setup_db(app, database_path=database_path):
+def setup_db(app, database_path=DATABASE_PATH):
     """
     Initializes database
     """
-    # app.config["SQLALCHEMY_DATABASE_URI"] = "postgres://localhost:5432/castingagency"
     app.config["SQLALCHEMY_DATABASE_URI"] = database_path
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.app = app
@@ -46,17 +48,29 @@ class Movie(db.Model):
         self.release_date = release_date
 
     def insert(self):
+        """
+        Insert record to database
+        """
         db.session.add(self)
         db.session.commit()
 
     def update(self):
+        """
+        Update record to database
+        """
         db.session.commit()
 
     def delete(self):
+        """
+        Remove record from database
+        """
         db.session.delete(self)
         db.session.commit()
 
     def format(self):
+        """
+        Return movie data
+        """
         return {
             'id': self.id,
             'title': self.title,
@@ -81,17 +95,29 @@ class Actor(db.Model):
         self.gender = gender
 
     def insert(self):
+        """
+        Insert record to database
+        """
         db.session.add(self)
         db.session.commit()
 
     def update(self):
+        """
+        Update record to database
+        """
         db.session.commit()
 
     def delete(self):
+        """
+        Remove record from database
+        """
         db.session.delete(self)
         db.session.commit()
 
     def format(self):
+        """
+        Return actor data
+        """
         return {
             'id': self.id,
             'name': self.name,
