@@ -2,10 +2,10 @@ import os
 import sys
 from flask import Flask, request, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
-from .models import setup_db, db_drop_and_create_all, Movie, Actor
-from .auth import AuthError, requires_auth
-# from models import setup_db, db_drop_and_create_all, Movie, Actor
-# from auth import AuthError, requires_auth
+# from .models import setup_db, db_drop_and_create_all, Movie, Actor
+# from .auth import AuthError, requires_auth
+from models import setup_db, db_drop_and_create_all, Movie, Actor
+from auth import AuthError, requires_auth
 
 
 def create_app(test_config=None):
@@ -54,19 +54,16 @@ def create_app(test_config=None):
         Adds new movie to the database
         """
         if request.data:
-            print("request", request)
-            print("request.data", request.data)
             try:
                 # parse data as json
                 new_movie_data = request.get_json('movie')
-                print("new_movie_data", new_movie_data)
-                title = new_actor_data["title"]
-                release_date = new_actor_data["release_date"]
+                title = new_movie_data["title"]
+                release_date = new_movie_data["release_date"]
+                # print("new_movie_data", new_movie_data)
 
                 movie_db = Movie(title, release_date)
                 movie_db.insert()
                 movie = [movie_db.format()]
-                print("movie", movie)
                 return jsonify({
                     "success": True,
                     "movies": movie
@@ -158,7 +155,6 @@ def create_app(test_config=None):
             try:
                 # parse data as json
                 new_actor_data = request.get_json('actor')
-                print("new_actor_data", new_actor_data)
                 name = new_actor_data["name"]
                 age = new_actor_data["age"]
                 gender = new_actor_data["gender"]
@@ -166,7 +162,6 @@ def create_app(test_config=None):
                 actor_db = Actor(name, age, gender)
                 actor_db.insert()
                 actor = [actor_db.format()]
-                print("actor", actor)
                 return jsonify({
                     "success": True,
                     "actors": actor
