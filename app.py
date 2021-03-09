@@ -3,10 +3,8 @@ Casting agency app
 """
 import sys
 from flask import Flask, request, abort, jsonify
-from .models import setup_db, db_drop_and_create_all, Movie, Actor
-from .auth import AuthError, requires_auth
-# from models import setup_db, Movie, Actor
-# from auth import requires_auth, AuthError
+from models import setup_db, db_drop_and_create_all, Movie, Actor
+from auth import AuthError, requires_auth
 
 
 def create_app(test_config=None):
@@ -22,13 +20,13 @@ def create_app(test_config=None):
             "success": True
         })
 
-
     """
     Movies Endpoints
     """
     @app.route('/movies')
     @requires_auth('get:movies')
-    # @requires_auth decorator passes token argument when calling respective method
+    # @requires_auth decorator passes token argument when calling respective
+    # method
     def get_movies(token):
         """
         Return all movies

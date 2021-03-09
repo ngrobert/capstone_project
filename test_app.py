@@ -4,8 +4,8 @@ Casting agency tests
 import unittest
 import json
 from flask_sqlalchemy import SQLAlchemy
-from .models import setup_db, Movie, Actor
-from .app import create_app
+from models import setup_db, Movie, Actor
+from app import create_app
 
 
 # pylint: disable=too-many-instance-attributes, too-many-public-methods
@@ -52,19 +52,25 @@ class CastingAgencyTestCase(unittest.TestCase):
                              "5ZhXdF0XHriaTYftMsKGGQ6w"
         }
         self.casting_producer = {
-            "Authorization": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Im1CSk5ucHk5dlNJQ"
-                             "XpuaU1NYUF4ViJ9.eyJpc3MiOiJodHRwczovL2Rldi04ZnhjdGxlYy51cy5hdXRoMC5jb"
-                             "20vIiwic3ViIjoiYXV0aDB8NWY3NzUzOWNiYmJkODIwMDY4NjlmNDZjIiwiYXVkIjoia"
-                             "HR0cHM6Ly9jYXN0aW5nLWFnZW5jeS8iLCJpYXQiOjE2MTUxNTY4MjEsImV4cCI6MTYxN"
-                             "TIyODgyMSwiYXpwIjoiR2hyT282c3FkU2paY2txMnB1QlB2d1ZacmdrZmR5M1YiLCJzY"
-                             "29wZSI6IiIsInBlcm1pc3Npb25zIjpbImRlbGV0ZTphY3RvcnMiLCJkZWxldGU6bW92a"
-                             "WVzIiwiZ2V0OmFjdG9ycyIsImdldDptb3ZpZXMiLCJwYXRjaDphY3RvcnMiLCJwYXRja"
-                             "Dptb3ZpZXMiLCJwb3N0OmFjdG9ycyIsInBvc3Q6bW92aWVzIl19.WZcKzjRwdQ-L-_UV"
-                             "WdyxvlCIJ_NP0W9AA2CKFW6my4RUqY7d_IWcQCkY4LNXIuT5WobTAqTTQ0j1znQ9D98C"
-                             "jaDMx2aFLh0v3Ts8bZFPwviMCagxwB1-jJ69pO7CBCwkzcvYk8g5tuWm2ZwxbgdHMafq"
-                             "gAo_vPszM42zbg6HbjPw_I8CeNy9T7q3qMS3jKaEnscdQPDSx3iQwcnZk9xRyMuooP10"
-                             "P4k6XaHsXqO8oBtQs_Q2htDVK5D-s3gZSqrZXYtAw2falq88EhDtvK-IJHri35UVy-KZ"
-                             "oIRYFISSH5CngFeHZqpP_03ZZ23IPBoI2lzTwYXdf4ogJ9SCDHqvgA"
+            "Authorization": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtp"
+                             "ZCI6Im1CSk5ucHk5dlNJQXpuaU1NYUF4ViJ9.eyJpc3MiOi"
+                             "JodHRwczovL2Rldi04ZnhjdGxlYy51cy5hdXRoMC5jb"
+                             "20vIiwic3ViIjoiYXV0aDB8NWY3NzUzOWNiYmJkODIwMDY4"
+                             "NjlmNDZjIiwiYXVkIjoiaHR0cHM6Ly9jYXN0aW5nLWFnZW5"
+                             "jeS8iLCJpYXQiOjE2MTUxNTY4MjEsImV4cCI6MTYxN"
+                             "TIyODgyMSwiYXpwIjoiR2hyT282c3FkU2paY2txMnB1QlB2d"
+                             "1ZacmdrZmR5M1YiLCJzY29wZSI6IiIsInBlcm1pc3Npb25zIj"
+                             "pbImRlbGV0ZTphY3RvcnMiLCJkZWxldGU6bW92a"
+                             "WVzIiwiZ2V0OmFjdG9ycyIsImdldDptb3ZpZXMiLCJwYXRjaD"
+                             "phY3RvcnMiLCJwYXRjaDptb3ZpZXMiLCJwb3N0OmFjdG9ycyI"
+                             "sInBvc3Q6bW92aWVzIl19.WZcKzjRwdQ-L-_UVWdyxvlCIJ_N"
+                             "P0W9AA2CKFW6my4RUqY7d_IWcQCkY4LNXIuT5WobTAqTTQ0j1z"
+                             "nQ9D98CjaDMx2aFLh0v3Ts8bZFPwviMCagxwB1-jJ69pO7CBC"
+                             "wkzcvYk8g5tuWm2ZwxbgdHMafqgAo_vPszM42zbg6HbjPw_I8"
+                             "CeNy9T7q3qMS3jKaEnscdQPDSx3iQwcnZk9xRyMuooP10"
+                             "P4k6XaHsXqO8oBtQs_Q2htDVK5D-s3gZSqrZXYtAw2falq88E"
+                             "hDtvK-IJHri35UVy-KZoIRYFISSH5CngFeHZqpP_03ZZ23IPB"
+                             "oI2lzTwYXdf4ogJ9SCDHqvgA"
         }
 
         self.new_actor = {
@@ -84,10 +90,8 @@ class CastingAgencyTestCase(unittest.TestCase):
             # create all tables
             self._db.create_all()
 
-
     def tearDown(self):
         """Executed after reach test"""
-
 
     # Tests for unauthorized user
     def test_no_access_get_actors(self):
@@ -115,7 +119,8 @@ class CastingAgencyTestCase(unittest.TestCase):
         """
         Tests casting assistant can view actors data
         """
-        response = self.client().get('/actors', headers=self.casting_assistant)
+        response = self.client().get('/actors',
+                                     headers=self.casting_assistant)
         data = json.loads(response.data)
 
         self.assertEqual(response.status_code, 200)
@@ -126,7 +131,8 @@ class CastingAgencyTestCase(unittest.TestCase):
         """
         Tests casting assistant can view movies data
         """
-        response = self.client().get('/movies', headers=self.casting_assistant)
+        response = self.client().get('/movies',
+                                     headers=self.casting_assistant)
         data = json.loads(response.data)
 
         self.assertEqual(response.status_code, 200)
@@ -137,7 +143,8 @@ class CastingAgencyTestCase(unittest.TestCase):
         """
         Tests casting assistant cannot create actor
         """
-        response = self.client().post('/actors', headers=self.casting_assistant,
+        response = self.client().post('/actors',
+                                      headers=self.casting_assistant,
                                       json=self.new_actor)
         data = json.loads(response.data)
 
@@ -149,7 +156,8 @@ class CastingAgencyTestCase(unittest.TestCase):
         """
         Tests casting assistant cannot create movies
         """
-        response = self.client().post('/movies', headers=self.casting_assistant,
+        response = self.client().post('/movies',
+                                      headers=self.casting_assistant,
                                       json=self.new_movie)
         data = json.loads(response.data)
 
@@ -161,7 +169,8 @@ class CastingAgencyTestCase(unittest.TestCase):
         """
         Tests casting assistant cannot update actor
         """
-        response = self.client().patch('/actors/1', headers=self.casting_assistant,
+        response = self.client().patch('/actors/1',
+                                       headers=self.casting_assistant,
                                        json=self.new_actor)
         data = json.loads(response.data)
 
@@ -173,7 +182,8 @@ class CastingAgencyTestCase(unittest.TestCase):
         """
         Tests casting assistant cannot update movies
         """
-        response = self.client().patch('/movies/1', headers=self.casting_assistant,
+        response = self.client().patch('/movies/1',
+                                       headers=self.casting_assistant,
                                        json=self.new_movie)
         data = json.loads(response.data)
 
@@ -185,7 +195,8 @@ class CastingAgencyTestCase(unittest.TestCase):
         """
         Tests casting assistant cannot delete actor
         """
-        response = self.client().delete('/actors/1', headers=self.casting_assistant)
+        response = self.client().delete('/actors/1',
+                                        headers=self.casting_assistant)
         data = json.loads(response.data)
 
         self.assertEqual(response.status_code, 401)
@@ -196,7 +207,8 @@ class CastingAgencyTestCase(unittest.TestCase):
         """
         Tests casting assistant cannot delete movies
         """
-        response = self.client().delete('/movies/1', headers=self.casting_assistant)
+        response = self.client().delete('/movies/1',
+                                        headers=self.casting_assistant)
         data = json.loads(response.data)
 
         self.assertEqual(response.status_code, 401)
@@ -208,7 +220,8 @@ class CastingAgencyTestCase(unittest.TestCase):
         """
         Tests casting director can view actors data
         """
-        response = self.client().get('/actors', headers=self.casting_director)
+        response = self.client().get('/actors',
+                                     headers=self.casting_director)
         data = json.loads(response.data)
 
         self.assertEqual(response.status_code, 200)
@@ -219,7 +232,8 @@ class CastingAgencyTestCase(unittest.TestCase):
         """
         Tests casting director can view movies data
         """
-        response = self.client().get('/movies', headers=self.casting_director)
+        response = self.client().get('/movies',
+                                     headers=self.casting_director)
         data = json.loads(response.data)
 
         self.assertEqual(response.status_code, 200)
@@ -231,7 +245,9 @@ class CastingAgencyTestCase(unittest.TestCase):
         Tests casting director can create actor
         """
         total_actors_before = len(Actor.query.all())
-        response = self.client().post('/actors', headers=self.casting_director, json=self.new_actor)
+        response = self.client().post('/actors',
+                                      headers=self.casting_director,
+                                      json=self.new_actor)
         data = json.loads(response.data)
         total_actors_after = total_actors_before + 1
 
@@ -243,7 +259,9 @@ class CastingAgencyTestCase(unittest.TestCase):
         """
         Tests casting director can create movies
         """
-        response = self.client().post('/movies', headers=self.casting_director, json=self.new_movie)
+        response = self.client().post('/movies',
+                                      headers=self.casting_director,
+                                      json=self.new_movie)
         data = json.loads(response.data)
 
         self.assertEqual(response.status_code, 401)
@@ -254,10 +272,12 @@ class CastingAgencyTestCase(unittest.TestCase):
         """
         Tests casting director can update actor
         """
-        before_update = self.client().get('/actors', headers=self.casting_director)
+        before_update = self.client().get('/actors',
+                                          headers=self.casting_director)
         before_update = json.loads(before_update.data)["actors"][0]
         update_actor = {'name': before_update["name"] + "S"}
-        response = self.client().patch('/actors/24', headers=self.casting_director,
+        response = self.client().patch('/actors/24',
+                                       headers=self.casting_director,
                                        json=update_actor)
         data = json.loads(response.data)
         after_update = data["actors"][0]
@@ -269,10 +289,12 @@ class CastingAgencyTestCase(unittest.TestCase):
         """
         Tests casting director can update movies
         """
-        before_update = self.client().get('/movies', headers=self.casting_director)
+        before_update = self.client().get('/movies',
+                                          headers=self.casting_director)
         before_update = json.loads(before_update.data)["movies"][0]
         update_movie = {'title': before_update["title"] + "S"}
-        response = self.client().patch('/movies/10', headers=self.casting_director,
+        response = self.client().patch('/movies/10',
+                                       headers=self.casting_director,
                                        json=update_movie)
         data = json.loads(response.data)
         after_update = data
@@ -284,7 +306,8 @@ class CastingAgencyTestCase(unittest.TestCase):
         """
         Tests casting director can delete actor
         """
-        response = self.client().delete('/actors/25', headers=self.casting_director)
+        response = self.client().delete('/actors/25',
+                                        headers=self.casting_director)
         data = json.loads(response.data)
         actor = Actor.query.filter(Actor.id == 25).one_or_none()
 
@@ -297,7 +320,8 @@ class CastingAgencyTestCase(unittest.TestCase):
         """
         Tests casting director cannot delete movies
         """
-        response = self.client().delete('/movies/1', headers=self.casting_director)
+        response = self.client().delete('/movies/1',
+                                        headers=self.casting_director)
         data = json.loads(response.data)
 
         self.assertEqual(response.status_code, 401)
@@ -309,7 +333,8 @@ class CastingAgencyTestCase(unittest.TestCase):
         """
         Tests casting producer can view actors data
         """
-        response = self.client().get('/actors', headers=self.casting_producer)
+        response = self.client().get('/actors',
+                                     headers=self.casting_producer)
         data = json.loads(response.data)
 
         self.assertEqual(response.status_code, 200)
@@ -320,7 +345,8 @@ class CastingAgencyTestCase(unittest.TestCase):
         """
         Tests casting producer can view movies data
         """
-        response = self.client().get('/movies', headers=self.casting_producer)
+        response = self.client().get('/movies',
+                                     headers=self.casting_producer)
         data = json.loads(response.data)
 
         self.assertEqual(response.status_code, 200)
@@ -332,7 +358,9 @@ class CastingAgencyTestCase(unittest.TestCase):
         Tests casting producer can create actor
         """
         total_actors_before = len(Actor.query.all())
-        response = self.client().post('/actors', headers=self.casting_producer, json=self.new_actor)
+        response = self.client().post('/actors',
+                                      headers=self.casting_producer,
+                                      json=self.new_actor)
         data = json.loads(response.data)
         total_actors_after = total_actors_before + 1
 
@@ -346,7 +374,8 @@ class CastingAgencyTestCase(unittest.TestCase):
         """
         total_movies_before = len(Movie.query.all())
         print("total_movies_before", total_movies_before)
-        response = self.client().post('/movies', headers=self.casting_producer, json=self.new_movie)
+        response = self.client().post('/movies', headers=self.casting_producer,
+                                      json=self.new_movie)
         print("response", response)
         data = json.loads(response.data)
         print("data", data)
@@ -361,10 +390,12 @@ class CastingAgencyTestCase(unittest.TestCase):
         """
         Tests casting producer can update actor
         """
-        before_update = self.client().get('/actors', headers=self.casting_producer)
+        before_update = self.client().get('/actors',
+                                          headers=self.casting_producer)
         before_update = json.loads(before_update.data)["actors"][0]
         update_actor = {'name': before_update["name"] + "S"}
-        response = self.client().patch('/actors/24', headers=self.casting_producer,
+        response = self.client().patch('/actors/24',
+                                       headers=self.casting_producer,
                                        json=update_actor)
         data = json.loads(response.data)
         after_update = data["actors"][0]
@@ -376,10 +407,12 @@ class CastingAgencyTestCase(unittest.TestCase):
         """
         Tests casting producer can update movies
         """
-        before_update = self.client().get('/movies', headers=self.casting_producer)
+        before_update = self.client().get('/movies',
+                                          headers=self.casting_producer)
         before_update = json.loads(before_update.data)["movies"][0]
         update_movie = {'title': before_update["title"] + "S"}
-        response = self.client().patch('/movies/10', headers=self.casting_producer,
+        response = self.client().patch('/movies/10',
+                                       headers=self.casting_producer,
                                        json=update_movie)
         data = json.loads(response.data)
         after_update = data
@@ -391,7 +424,8 @@ class CastingAgencyTestCase(unittest.TestCase):
         """
         Tests casting producer can delete actor
         """
-        response = self.client().delete('/actors/25', headers=self.casting_producer)
+        response = self.client().delete('/actors/25',
+                                        headers=self.casting_producer)
         data = json.loads(response.data)
         actor = Actor.query.filter(Actor.id == 25).one_or_none()
 
@@ -404,7 +438,8 @@ class CastingAgencyTestCase(unittest.TestCase):
         """
         Tests casting producer cannot delete movies
         """
-        response = self.client().delete('/movies/2', headers=self.casting_producer)
+        response = self.client().delete('/movies/2',
+                                        headers=self.casting_producer)
         data = json.loads(response.data)
         movie = Movie.query.filter(Movie.id == 25).one_or_none()
 
@@ -412,6 +447,7 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertEqual(data['success'], True)
         self.assertEqual(data['delete'], 2)
         self.assertEqual(movie, None)
+
 
 # Make the tests conveniently executable
 if __name__ == "__main__":
