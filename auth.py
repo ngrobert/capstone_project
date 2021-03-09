@@ -104,7 +104,8 @@ def verify_decode_jwt(token):
         except jwt.JWTClaimsError:
             raise AuthError({
                 'code': 'invalid_claims',
-                'description': 'Incorrect claims. Please, check the audience and issuer.'
+                'description': 'Incorrect claims. Please, check the '
+                               'audience and issuer.'
             }, 401)
         except Exception:
             raise AuthError({
@@ -126,11 +127,8 @@ def requires_auth(permission=''):
         def wrapper(*args, **kwargs):
             # get the token
             token = get_token_auth_header()
-            try:
-                # decode the jwt
-                payload = verify_decode_jwt(token)
-            except:
-                abort(401)
+            # decode the jwt
+            payload = verify_decode_jwt(token)
             # validate claims and check the requested permission
             check_permissions(permission, payload)
             return f(payload, *args, **kwargs)

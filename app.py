@@ -43,9 +43,8 @@ def create_app(test_config=None):
                 'movies': movies,
             })
 
-        except:
+        except Exception as e:
             abort(422)
-
 
     @app.route('/movies', methods=['POST'])
     @requires_auth('post:movies')
@@ -71,7 +70,6 @@ def create_app(test_config=None):
             except BaseException:
                 abort(422)
 
-
     @app.route('/movies/<int:movie_id>', methods=['PATCH'])
     @requires_auth('patch:movies')
     def update_movie(token, movie_id):
@@ -82,7 +80,8 @@ def create_app(test_config=None):
             body = request.get_json(force=True)
             movie = Movie.query.filter(Movie.id == movie_id).one_or_none()
             title = body["title"] if "title" in body else movie.title
-            release_date = body["release_date"] if "release_date" in body else movie.release_date
+            release_date = body["release_date"] if "release_date" in \
+                                                   body else movie.release_date
             movie.title = title
             movie.release_date = release_date
             movie.update()
@@ -95,7 +94,6 @@ def create_app(test_config=None):
         except Exception as e:
             print(e)
             abort(422)
-
 
     @app.route('/movies/<int:movie_id>', methods=['DELETE'])
     @requires_auth('delete:movies')
@@ -115,7 +113,6 @@ def create_app(test_config=None):
         except Exception as e:
             print(sys.exc_info())
             abort(422)
-
 
     """
     Actors Endpoints
@@ -141,7 +138,6 @@ def create_app(test_config=None):
 
         except:  # noqa
             abort(422)
-
 
     @app.route('/actors', methods=['POST'])
     @requires_auth('post:actors')
@@ -169,7 +165,6 @@ def create_app(test_config=None):
             except BaseException:
                 abort(422)
 
-
     @app.route('/actors/<int:actor_id>', methods=['PATCH'])
     @requires_auth('patch:actors')
     def update_actor(token, actor_id):
@@ -196,7 +191,6 @@ def create_app(test_config=None):
             print(e)
             abort(422)
 
-
     @app.route('/actors/<int:actor_id>', methods=['DELETE'])
     @requires_auth('delete:actors')
     def delete_actor(token, actor_id):
@@ -215,7 +209,6 @@ def create_app(test_config=None):
         except Exception as e:
             print(sys.exc_info())
             abort(422)
-
 
     # Error Handling
     @app.errorhandler(400)
@@ -250,7 +243,6 @@ def create_app(test_config=None):
             "message": "unprocessable entity"
         }), 422
 
-
     @app.errorhandler(AuthError)
     def handle_auth_error(ex):
         """
@@ -261,6 +253,7 @@ def create_app(test_config=None):
         return response
 
     return app
+
 
 app = create_app()
 
