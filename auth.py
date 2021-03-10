@@ -8,6 +8,7 @@ from flask import request, abort
 from jose import jwt
 
 
+# auth0 used to add authorization and authentication to app
 AUTH0_DOMAIN = 'dev-8fxctlec.us.auth0.com'
 ALGORITHMS = ['RS256']
 API_AUDIENCE = 'https://casting-agency/'
@@ -15,7 +16,7 @@ API_AUDIENCE = 'https://casting-agency/'
 
 class AuthError(Exception):
     """
-    Communicate auth issues
+    Communicate auth issues when trying to log into the app
     """
     def __init__(self, error, status_code):
         self.error = error
@@ -31,31 +32,12 @@ def get_token_auth_header():
 
     auth_header = request.headers["Authorization"]
     header_parts = auth_header.split(" ")
-    print(header_parts)
     if len(header_parts) != 2:
         abort(401)
     elif header_parts[0].lower() != "bearer":
         abort(401)
 
     return header_parts[1]
-
-
-def check_permissions(permission, payload):
-    """
-    Check permissions are included in the payload
-    """
-    if 'permissions' not in payload:
-        raise AuthError({
-            'code': 'invalid_claims',
-            'description': 'Permissions not included in JWT.'
-        }, 400)
-
-    if permission not in payload['permissions']:
-        raise AuthError({
-            'code': 'unauthorized',
-            'description': 'Permission not found.'
-        }, 401)
-    return True
 
 
 def verify_decode_jwt(token):
@@ -118,6 +100,24 @@ def verify_decode_jwt(token):
             }, 400)
 
 
+def check_permissions(permission, payload):
+    """
+    Check permissions are included in the payload
+    """
+    if 'permissions' not in payload:
+        raise AuthError({
+            'code': 'invalid_claims',
+            'description': 'Permissions not included in JWT.'
+        }, 400)
+
+    if permission not in payload['permissions']:
+        raise AuthError({
+            'code': 'unauthorized',
+            'description': 'Permission not found.'
+        }, 401)
+    return True
+
+
 def requires_auth(permission=''):
     """
     Set up decorator
@@ -129,7 +129,7 @@ def requires_auth(permission=''):
             token = get_token_auth_header()
             # decode the jwt
             payload = verify_decode_jwt(token)
-            # validate claims and check the requested permission
+            # check and validate the requested permission
             check_permissions(permission, payload)
             return f(payload, *args, **kwargs)
         return wrapper

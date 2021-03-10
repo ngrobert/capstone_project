@@ -24,27 +24,27 @@ class CastingAgencyTestCase(unittest.TestCase):
 
         # auth tokens for respective roles
         self.casting_assistant = {
-            "Authorization": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCI"
-                             "sImtpZCI6Im1CSk5ucHk5dlNJQXpuaU1NYUF4ViJ9"
-                             ".eyJpc3MiOiJodHRwczovL2Rli04ZnhjdGxlYy51c"
-                             "y5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NWY3N"
-                             "zUzNWRiNDkZTIwMDZiOTQyNDNkIiwiYXVkIjoiaH"
-                             "R0cHM6Ly9jYXN0aW5nLWFnZW5jeS8iLCJpYXiOjE"
-                             "2MTUwOTA1OTYsImV4cCI6MTYxNTA5Nzc5NiwiYX"
-                             "pwIjoiR2hyT282c3FkU2paYtxMnB1QlB2d1Zacm"
-                             "drZmR5M1YiLCJzY29wZSI6IiIsInBlcm1pc3Npb"
-                             "25zIjpbImRlGV0ZTphY3RvcnMiLCJnZXQ6YWN0b"
-                             "3JzIiwiZ2V0Om1vdmllcyIsInBhdGNoOmFjdG9c"
-                             "yIsInBhdGNoOm1vdmllcyIsInBvc3Q6YWN0b3Jz"
-                             "Il19.OFnRS8gpESVH3MGzvbiy8uD2M9LebwGMpl"
-                             "JR2FzyZJArgI6AmJhHAlGdin1P9mJRRw3-CCAsN"
-                             "AEcTpy_eTx_HM2ddKTAFCdlRUXiQJRE4yyZvgJV"
-                             "n4NR0wdXn8VvAIDGiHKJEDxKqSi83NWOnHztkIE"
-                             "bpbEJcseXW9bP0SS3W1SMxxerxgEewmvb1T0nUd"
-                             "PgJTY5d9zd99a-ick6k65IlqMQH9wA2Ka49CRO"
-                             "HgizgC7VJmuYHDype8whC6yLG6eonuAhNDfVo4"
-                             "0WbNX3HgDDumuXUeJJ3Z3aQ0PEkS0-lmL7Xehp"
-                             "Vv-tpuTFv5ZhXdF0XHriaTYftMsKGGQ6w"
+            "Authorization": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpX"
+                             "VCIsImtpZCI6Im1CSk5ucHk5dlNJQXpuaU1NYU"
+                             "F4ViJ9.eyJpc3MiOiJodHRwczovL2Rldi04Znh"
+                             "jdGxlYy51cy5hdXRoMC5jb20vIiwic3ViIjoiY"
+                             "XV0aDB8NjA0NDMwZDAwZDlmNzEwMDcwZWU2NG"
+                             "M3IiwiYXVkIjoiaHR0cHM6Ly9jYXN0aW5nLWF"
+                             "nZW5jeS8iLCJpYXQiOjE2MTUzOTE4MDcsImV4"
+                             "cCI6MTYxNTQ2MzgwNywiYXpwIjoiR2hyT282c3"
+                             "FkU2paY2txMnB1QlB2d1ZacmdrZmR5M1YiLCJz"
+                             "Y29wZSI6IiIsInBlcm1pc3Npb25zIjpbImdld"
+                             "DphY3RvcnMiLCJnZXQ6bW92aWVzIl19.FkKa-"
+                             "W777q1q_bOT2EWfJc7md4IYrY1zduNxzFmjDV"
+                             "UNU9Okwz1NOYhVOvhhibo8AyhuA0OzJywYzhA"
+                             "SrMmvWh1fclo3vl1-38pX5SM-d1WVoU2FlEy9"
+                             "nNx7lVwTmMxs7bR9LvqFt7BBrgJLxTuAbIAz"
+                             "qxnYS399YZRZUFCQVJvXqEgTN2aZ4ctrWn8V"
+                             "MRXJ0wW4sUz_tBMoSSAUHPE9cj-IlzOqorE-"
+                             "riQ9qGJC8x3ks44e9LXXp650QvZ859EEIyxh"
+                             "j5YvHV2BMj0_1AUcCl8qdD2n6jIzaaPbwyq"
+                             "nzbAB3bb7gBBusO3hNI6Lyb4sytG_zihjEu"
+                             "epdF-9oP0NQQ"
         }
         self.casting_director = {
             "Authorization": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVC"
@@ -102,12 +102,13 @@ class CastingAgencyTestCase(unittest.TestCase):
             "release_date": "1111-22-33",
         }
 
-        # binds the app to the current context
+        # need to use functionality that interfaces with app
+        # bind app to the current context
         with self.app.app_context():
-            self._db = SQLAlchemy()
-            self._db.init_app(self.app)
+            self.db = SQLAlchemy()
+            self.db.init_app(self.app)
             # create all tables
-            self._db.create_all()
+            self.db.create_all()
 
     def tearDown(self):
         """Executed after reach test"""
