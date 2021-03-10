@@ -17,6 +17,8 @@ class CastingAgencyTestCase(unittest.TestCase):
         """Define test variables and initialize app."""
         self.app = create_app()
         self.client = self.app.test_client
+
+        # mock database connection
         self.database_name = "castingagency"
         self.database_path = "postgres://{}/{}".format('localhost:5432',
                                                        self.database_name)
@@ -393,14 +395,10 @@ class CastingAgencyTestCase(unittest.TestCase):
         Tests casting producer can create movies
         """
         total_movies_before = len(Movie.query.all())
-        print("total_movies_before", total_movies_before)
         response = self.client().post('/movies', headers=self.casting_producer,
                                       json=self.new_movie)
-        print("response", response)
         data = json.loads(response.data)
-        print("data", data)
         total_movies_after = total_movies_before + 1
-        print("total_movies_after", total_movies_after)
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(data['success'], True)

@@ -3,8 +3,8 @@ Casting agency app
 """
 import sys
 from flask import Flask, request, abort, jsonify
-from models import setup_db, db_drop_and_create_all, Movie, Actor
-from auth import AuthError, requires_auth
+from .models import setup_db, db_drop_and_create_all, Movie, Actor
+from .auth import AuthError, requires_auth
 
 
 def create_app(test_config=None):
