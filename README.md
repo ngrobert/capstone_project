@@ -36,5 +36,54 @@ To start and Development the local development server,
 4. Navigate to Home page [http://localhost:5000](http://localhost:5000)
 
 
+### API endpoints
+```
+    - GET /actors
+    - GET /movies
+    - POST /actors
+    - POST /movies
+    - PATCH /actors
+    - PATCH /movies
+    - DELETE /actors
+    - DELETE /movies
+```
+    
 
-* Documentation of API behavior and RBAC controls
+    
+### RBAC controls
+```
+    * Casting Assistant has the following permissions:
+        - GET /actors
+        - GET /movies
+    * Casting Director has the following permissions:
+        - GET /actors
+        - GET /movies
+        - POST /actors
+        - PATCH /actors
+        - PATCH /movies
+        - DELETE /actors
+    * Executive Producer has the following permissions:
+        - GET /actors
+        - GET /movies
+        - POST /actors
+        - POST /movies
+        - PATCH /actors
+        - PATCH /movies
+        - DELETE /actors
+        - DELETE /movies
+```
+        
+        
+### Authentication (bearer tokens)
+Casting assistant
+```
+eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Im1CSk5ucHk5dlNJQXpuaU1NYUF4ViJ9.eyJpc3MiOiJodHRwczovL2Rldi04ZnhjdGxlYy51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NjA0NDMwZDAwZDlmNzEwMDcwZWU2NGM3IiwiYXVkIjoiaHR0cHM6Ly9jYXN0aW5nLWFnZW5jeS8iLCJpYXQiOjE2MTU1MjE1NTIsImV4cCI6MTYxNTU5MzU1MiwiYXpwIjoiR2hyT282c3FkU2paY2txMnB1QlB2d1ZacmdrZmR5M1YiLCJzY29wZSI6IiIsInBlcm1pc3Npb25zIjpbImdldDphY3RvcnMiLCJnZXQ6bW92aWVzIl19.YguobDkRrWR66UZXugJGnYJ70LsKC6LUzHrbPYLU6Qgky576eVEJNpXQYwlX1VwynDZYLji8DrVAuTktoFYz73tTX77ZYl4G5a1jMMpLEUwIoayBUpTIsUyAyl_DAv2S55DHAbzpqjsG-Pp3GdMovPioux90KNEHCTiRrCwmCt1DuN_7tM-FIrGWUIYB6iDdZ9d0iZpNnR3a3vNQaw1xf7ryKIrkDifm6sA7JcYJlhJRhIj750QUrqsID4kh7XL4glsHM7QGKSAkA0olitZ9qBlWqsKnRnWHiCcOB3J5ZQAW5lH1fVq-QiLtRMYPwMDbAhrNZAF6bwkf20e2FTkUJQ
+```
+Casting director
+```
+eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Im1CSk5ucHk5dlNJQXpuaU1NYUF4ViJ9.eyJpc3MiOiJodHRwczovL2Rldi04ZnhjdGxlYy51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NWY3NzUzNWRiNDk4ZTIwMDZiOTQyNDNkIiwiYXVkIjoiaHR0cHM6Ly9jYXN0aW5nLWFnZW5jeS8iLCJpYXQiOjE2MTU1MjA4NDcsImV4cCI6MTYxNTU5Mjg0NywiYXpwIjoiR2hyT282c3FkU2paY2txMnB1QlB2d1ZacmdrZmR5M1YiLCJzY29wZSI6IiIsInBlcm1pc3Npb25zIjpbImRlbGV0ZTphY3RvcnMiLCJnZXQ6YWN0b3JzIiwiZ2V0Om1vdmllcyIsInBhdGNoOmFjdG9ycyIsInBhdGNoOm1vdmllcyIsInBvc3Q6YWN0b3JzIl19.BuJAlW8J5WxAvQZB9a3ZNlgTpn0VVNiDBL9tW_Uae6iNg9Qg87xTa10Yg93uhHi0VI_hjr4mGwmzoGyIK1oebUOCrZzKypXRQK6yfZDr4N8NdrBQo1jIV7aUNX1gZe96hp8exnll0zEL-HvdpDYDd9Z5BqfbI80Kg8WBan2k5SRbqvShc4WlzbstVP2LBgiQ2_A4EqR0yOP-ssJn8FVh7Dnqv-4WYvWbiNk-yX2KFMeo1wCWdPP2AcwC-AhfwHspo5_taS8zdMUP3gsNAAzvmIjgXkiecD3S3J_uAqe6s_YetpO415kuYDbUNZ5beYWQ_5x98823iLoFAqw0I0kdWg
+```
+Executive producer
+```
+eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Im1CSk5ucHk5dlNJQXpuaU1NYUF4ViJ9.eyJpc3MiOiJodHRwczovL2Rldi04ZnhjdGxlYy51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NWY3NzUzOWNiYmJkODIwMDY4NjlmNDZjIiwiYXVkIjoiaHR0cHM6Ly9jYXN0aW5nLWFnZW5jeS8iLCJpYXQiOjE2MTUxNTY4MjEsImV4cCI6MTYxNTIyODgyMSwiYXpwIjoiR2hyT282c3FkU2paY2txMnB1QlB2d1ZacmdrZmR5M1YiLCJzY29wZSI6IiIsInBlcm1pc3Npb25zIjpbImRlbGV0ZTphY3RvcnMiLCJkZWxldGU6bW92aWVzIiwiZ2V0OmFjdG9ycyIsImdldDptb3ZpZXMiLCJwYXRjaDphY3RvcnMiLCJwYXRjaDptb3ZpZXMiLCJwb3N0OmFjdG9ycyIsInBvc3Q6bW92aWVzIl19.WZcKzjRwdQ-L-_UVWdyxvlCIJ_NP0W9AA2CKFW6my4RUqY7d_IWcQCkY4LNXIuT5WobTAqTTQ0j1znQ9D98CjaDMx2aFLh0v3Ts8bZFPwviMCagxwB1-jJ69pO7CBCwkzcvYk8g5tuWm2ZwxbgdHMafqgAo_vPszM42zbg6HbjPw_I8CeNy9T7q3qMS3jKaEnscdQPDSx3iQwcnZk9xRyMuooP10P4k6XaHsXqO8oBtQs_Q2htDVK5D-s3gZSqrZXYtAw2falq88EhDtvK-IJHri35UVy-KZoIRYFISSH5CngFeHZqpP_03ZZ23IPBoI2lzTwYXdf4ogJ9SCDHqvgA
+```
