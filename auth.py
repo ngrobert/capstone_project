@@ -127,9 +127,12 @@ def requires_auth(permission=''):
         def wrapper(*args, **kwargs):
             # get the token
             token = get_token_auth_header()
-            # decode the jwt
-            payload = verify_decode_jwt(token)
-            # check and validate the requested permission
+            try:
+                # decode the jwt
+                payload = verify_decode_jwt(token)
+            except Exception:
+                abort(401)
+            # validate claims and check the requested permission
             check_permissions(permission, payload)
             return f(payload, *args, **kwargs)
         return wrapper

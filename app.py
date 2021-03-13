@@ -241,6 +241,14 @@ def create_app(test_config=None):
             "message": "unprocessable entity"
         }), 422
 
+    @app.errorhandler(500)
+    def server_error(error):
+        return jsonify({
+            "success": False,
+            "error": 500,
+            "message": "server error"
+        }), 500
+
     @app.errorhandler(AuthError)
     def handle_auth_error(ex):
         """

@@ -38,19 +38,147 @@ To start and Development the local development server,
 
 ### API endpoints
 ```
-    - GET /actors
-    - GET /movies
-    - POST /actors
-    - POST /movies
-    - PATCH /actors
-    - PATCH /movies
-    - DELETE /actors
-    - DELETE /movies
+- GET /actors
+    - Fetches list of actors
+    - Request argument: none
+    - Returns success and list of actors
+{
+	"actors": [{
+			"age": 21,
+			"gender": "Male",
+			"id": 1,
+			"name": "Brad Pitt"
+		}
+	],
+	"success": true
+}
+
+- GET /movies
+    - Fetches list of movies
+    - Request argument: none
+    - Returns success and list of movies
+{
+	"movies": [{
+			"id": 1,
+			"title": "Forest Gump",
+			"release_date": "2011-01-01"
+		}
+	],
+	"success": true
+}
+
+- POST /actors
+    - Adds actor to the database
+    - Request arguments: name, age, and gender
+{
+    "age": 22,
+    "gender": "Female",
+    "id": 2,
+    "name": "Jennifer Aniston"
+}
+    - Returns success and list of actors including what is passed in the request
+{
+	"actors": [{
+			"age": 21,
+			"gender": "Male",
+			"id": 1,
+			"name": "Brad Pitt"
+		},
+		{
+			"age": 22,
+			"gender": "Female",
+			"id": 2,
+			"name": "Jennifer Aniston"
+		}
+	],
+	"success": true
+}
+
+- POST /movies
+    - Adds movie to the database
+    - Request arguments: title and release date
+{
+    "id": 2,
+    "title": "Fight Club",
+    "release_date": "2021-02-02"
+}
+    - Returns success and list of movies including what is passed in the request
+{
+	"movies": [{
+			"id": 1,
+			"title": "Forest Gump",
+			"release_date": "2011-01-01"
+		},
+		{
+			"id": 2,
+			"title": "Fight Club",
+			"release_date": "2021-02-02"
+		}
+	],
+	"success": true
+}
+
+- PATCH /actors/<int:id>
+    - Updates information of actor id specified
+    - Request argument: any name, age, and/or gender combination
+{
+    "age": 121,
+    "gender": "Female",
+    "id": 1
+}
+    - Returns success and actor object with updated values from request
+{
+	"actors": [{
+			"age": 121,
+			"gender": "Female",
+			"id": 1,
+			"name": "Brad Pitt"
+		}
+	],
+	"success": true
+}
+
+- PATCH /movies/<int:id>
+    - Updates information of movie id specified
+    - Request argument: any title and/or release_date combination
+{
+    "id": 2,
+    "title": "Foo Bar"
+}
+    - Returns success and movie object with updated values from request
+{
+	"movies": [
+		{
+			"id": 2,
+			"title": "Foo Bar",
+			"release_date": "2021-02-02"
+		}
+	],
+	"success": true
+}
+
+- DELETE /actors/<int:id>
+    - Removes specified actor from database
+    - Request argument: none
+    - Returns success and deleted actor id
+{
+  "delete": 1,
+  "success": true
+}
+
+- DELETE /movies/<int:id>
+    - Removes specified movie from database
+    - Request argument: none
+    - Returns success and deleted movie id
+{
+  "delete": 1,
+  "success": true
+}
 ```
     
 
     
-### RBAC controls
+### Role Based Access Controls
 ```
     * Casting Assistant has the following permissions:
         - GET /actors
