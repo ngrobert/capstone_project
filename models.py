@@ -8,7 +8,12 @@ from flask_sqlalchemy import SQLAlchemy
 import json
 
 
-DATABASE_NAME = "castingagency"
+# DATABASE_NAME = "castingagency"
+DATABASE_PATH = os.environ.get('DATABASE_URL')
+if not DATABASE_PATH:
+    DATABASE_NAME = "castingagency"
+    DATABASE_PATH = "postgres://{}/{}".format('localhost:5432', DATABASE_NAME)
+print(os.environ)
 DATABASE_PATH = os.environ['DATABASE_URL']
 # DATABASE_PATH = "postgres://{}/{}".format('localhost:5432', DATABASE_NAME)
 db = SQLAlchemy()
