@@ -9,7 +9,8 @@ import json
 
 
 DATABASE_NAME = "castingagency"
-DATABASE_PATH = "postgres://{}/{}".format('localhost:5432', DATABASE_NAME)
+DATABASE_PATH = os.environ['DATABASE_URL']
+# DATABASE_PATH = "postgres://{}/{}".format('localhost:5432', DATABASE_NAME)
 db = SQLAlchemy()
 
 
