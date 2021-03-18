@@ -124,7 +124,6 @@ def create_app(test_config=None):
         """
         all_actors = Actor.query.all()
         actors = [actor.format() for actor in all_actors]
-        print("actors", actors)
 
         try:
             if len(actors) == 0:
