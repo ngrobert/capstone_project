@@ -1,6 +1,7 @@
 """
 Authentication info
 """
+import os
 import json
 from functools import wraps
 from urllib.request import urlopen
@@ -9,9 +10,9 @@ from jose import jwt
 
 
 # auth0 used to add authorization and authentication to app
-AUTH0_DOMAIN = 'dev-8fxctlec.us.auth0.com'
-ALGORITHMS = ['RS256']
-API_AUDIENCE = 'https://casting-agency/'
+AUTH0_DOMAIN = os.environ.get('AUTH0_DOMAIN')
+ALGORITHMS = os.environ.get['ALGORITHMS']
+API_AUDIENCE = os.environ.get('API_AUDIENCE')
 
 
 class AuthError(Exception):

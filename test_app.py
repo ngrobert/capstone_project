@@ -26,27 +26,7 @@ class CastingAgencyTestCase(unittest.TestCase):
 
         # auth tokens for respective roles
         self.casting_assistant = {
-            "Authorization": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6Ikp"
-                             "XVCIsImtpZCI6Im1CSk5ucHk5dlNJQXpuaU1N"
-                             "YUF4ViJ9.eyJpc3MiOiJodHRwczovL2Rldi04"
-                             "ZnhjdGxlYy51cy5hdXRoMC5jb20vIiwic3ViI"
-                             "joiYXV0aDB8NjA0NDMwZDAwZDlmNzEwMDcwZW"
-                             "U2NGM3IiwiYXVkIjoiaHR0cHM6Ly9jYXN0aW5"
-                             "nLWFnZW5jeS8iLCJpYXQiOjE2MTYwMzQxMDQs"
-                             "ImV4cCI6MTYxNjEwNjEwNCwiYXpwIjoiR2hy"
-                             "T282c3FkU2paY2txMnB1QlB2d1ZacmdrZmR5"
-                             "M1YiLCJzY29wZSI6IiIsInBlcm1pc3Npb25z"
-                             "IjpbImdldDphY3RvcnMiLCJnZXQ6bW92aWVz"
-                             "Il19.fwPh3iGpFNNZosy0zjHZhcyzeCmHQ0"
-                             "2FMu08asOP6SYRuDoaGc4nffaEDacLObZts9"
-                             "0bnEWWA30mP4ddfXL8aL4NfV1afZM4DKRS7Y"
-                             "xlNjBpM8yrv-tn4sMBsZi2_Jd0mLX2FpavU"
-                             "l6WpZ9XpUM3VV4Of2WTIjS9uGP-mIKxiR_D"
-                             "dt2NRjmVFDtSye8NfZ4ARCtWyAmj5UiphBX"
-                             "-Kns6cyPeFJcdlfy4GVjmbg3vTx6juDWAy5"
-                             "jLubmPcOz8hePOd54Gf1lSLXFODuogDe6L"
-                             "hxgNcQtl9S975_Mra6BhTikDuGuthKEuPcY"
-                             "R7ZWIBKnNkRJm6Ccvd2nrBmPLZt6jPg"
+            "Authorization": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Im1CSk5ucHk5dlNJQXpuaU1NYUF4ViJ9.eyJpc3MiOiJodHRwczovL2Rldi04ZnhjdGxlYy51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NjA0NDMwZDAwZDlmNzEwMDcwZWU2NGM3IiwiYXVkIjoiaHR0cHM6Ly9jYXN0aW5nLWFnZW5jeS8iLCJpYXQiOjE2MTYxMDE2NzcsImV4cCI6MTYxNjE3MzY3NywiYXpwIjoiR2hyT282c3FkU2paY2txMnB1QlB2d1ZacmdrZmR5M1YiLCJzY29wZSI6IiIsInBlcm1pc3Npb25zIjpbImdldDphY3RvcnMiLCJnZXQ6bW92aWVzIl19.PvLB3ta5IaxBKtNtkVS_VH6tBhrwl6mmHndqIj5Ae4U_HrCNwkvu9SB7Qx98k6BuuHudMdW5X8vb8j-8vxgLfebvM0tGztCr2YFJ3qCtZ7zLlQgzxjtquIjobw7dAQuI3ZS3IAQd5shnvxNIKoS50ISYltxPt9f7kngi6l6oW7VLniMcJzi7wIUB2lo9d22OzwtCeONqM8eXFEPAY6Cgk9InGY1IECQikLHm_YIKRqiAw9GNnAjxJmO3xpDkBjGtwUzA-v7xzI8ELmbz7Yl7sybntdtnpuUbVkklTK5M37QOYllMkZxRzgCYaKC2zs-K48Krd8OfJxKs9R_HAyrwOQ"
         }
         self.casting_director = {
             "Authorization": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXV"

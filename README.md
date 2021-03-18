@@ -12,6 +12,12 @@ This final project encompasses everything taught throughout the Fullstack Web De
 ## Project Dependencies
 This project requires python 3.7 or greater to be installed [python docs](https://wiki.python.org/moin/BeginnersGuide/Download)
 
+Tech stack:
+- SQLAlchemy to interact with the database
+- Postman to evaluate API endpoints
+- Heroku to host
+
+
 
 ### Local Environment
 To start and Development the local development server,
@@ -29,11 +35,17 @@ To start and Development the local development server,
   ```
 
 3. Run the development server:
+For linux:
   ```
   $ export FLASK_APP=app && export FLASK_ENV=development && flask run
   ```
+For windows:
+  ```
+  $ set FLASK_APP=app && set FLASK_ENV=development && flask run
+  ```
 
 4. Navigate to Home page [http://localhost:5000](http://localhost:5000)
+
 
 
 ### API endpoints
@@ -205,7 +217,7 @@ To start and Development the local development server,
 ### Authentication (bearer tokens)
 Casting assistant
 ```
-eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Im1CSk5ucHk5dlNJQXpuaU1NYUF4ViJ9.eyJpc3MiOiJodHRwczovL2Rldi04ZnhjdGxlYy51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NjA0NDMwZDAwZDlmNzEwMDcwZWU2NGM3IiwiYXVkIjoiaHR0cHM6Ly9jYXN0aW5nLWFnZW5jeS8iLCJpYXQiOjE2MTYwMzQxMDQsImV4cCI6MTYxNjEwNjEwNCwiYXpwIjoiR2hyT282c3FkU2paY2txMnB1QlB2d1ZacmdrZmR5M1YiLCJzY29wZSI6IiIsInBlcm1pc3Npb25zIjpbImdldDphY3RvcnMiLCJnZXQ6bW92aWVzIl19.fwPh3iGpFNNZosy0zjHZhcyzeCmHQ02FMu08asOP6SYRuDoaGc4nffaEDacLObZts90bnEWWA30mP4ddfXL8aL4NfV1afZM4DKRS7YxlNjBpM8yrv-tn4sMBsZi2_Jd0mLX2FpavUl6WpZ9XpUM3VV4Of2WTIjS9uGP-mIKxiR_Ddt2NRjmVFDtSye8NfZ4ARCtWyAmj5UiphBX-Kns6cyPeFJcdlfy4GVjmbg3vTx6juDWAy5jLubmPcOz8hePOd54Gf1lSLXFODuogDe6LhxgNcQtl9S975_Mra6BhTikDuGuthKEuPcYR7ZWIBKnNkRJm6Ccvd2nrBmPLZt6jPg
+eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Im1CSk5ucHk5dlNJQXpuaU1NYUF4ViJ9.eyJpc3MiOiJodHRwczovL2Rldi04ZnhjdGxlYy51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NjA0NDMwZDAwZDlmNzEwMDcwZWU2NGM3IiwiYXVkIjoiaHR0cHM6Ly9jYXN0aW5nLWFnZW5jeS8iLCJpYXQiOjE2MTYxMDE2NzcsImV4cCI6MTYxNjE3MzY3NywiYXpwIjoiR2hyT282c3FkU2paY2txMnB1QlB2d1ZacmdrZmR5M1YiLCJzY29wZSI6IiIsInBlcm1pc3Npb25zIjpbImdldDphY3RvcnMiLCJnZXQ6bW92aWVzIl19.PvLB3ta5IaxBKtNtkVS_VH6tBhrwl6mmHndqIj5Ae4U_HrCNwkvu9SB7Qx98k6BuuHudMdW5X8vb8j-8vxgLfebvM0tGztCr2YFJ3qCtZ7zLlQgzxjtquIjobw7dAQuI3ZS3IAQd5shnvxNIKoS50ISYltxPt9f7kngi6l6oW7VLniMcJzi7wIUB2lo9d22OzwtCeONqM8eXFEPAY6Cgk9InGY1IECQikLHm_YIKRqiAw9GNnAjxJmO3xpDkBjGtwUzA-v7xzI8ELmbz7Yl7sybntdtnpuUbVkklTK5M37QOYllMkZxRzgCYaKC2zs-K48Krd8OfJxKs9R_HAyrwOQ
 ```
 Casting director
 ```
