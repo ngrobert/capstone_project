@@ -331,14 +331,14 @@ class CastingAgencyTestCase(unittest.TestCase):
         """
         Tests casting director can delete actor
         """
-        response = self.client().delete('/actors/25',
+        response = self.client().delete('/actors/26',
                                         headers=self.casting_director)
         data = json.loads(response.data)
-        actor = Actor.query.filter(Actor.id == 25).one_or_none()
+        actor = Actor.query.filter(Actor.id == 26).one_or_none()
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(data['success'], True)
-        self.assertEqual(data['delete'], 25)
+        self.assertEqual(data['delete'], 26)
         self.assertEqual(actor, None)
 
     def test_director_delete_movies(self):
@@ -445,28 +445,28 @@ class CastingAgencyTestCase(unittest.TestCase):
         """
         Tests casting producer can delete actor
         """
-        response = self.client().delete('/actors/25',
+        response = self.client().delete('/actors/27',
                                         headers=self.casting_producer)
         data = json.loads(response.data)
-        actor = Actor.query.filter(Actor.id == 25).one_or_none()
+        actor = Actor.query.filter(Actor.id == 27).one_or_none()
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(data['success'], True)
-        self.assertEqual(data['delete'], 25)
+        self.assertEqual(data['delete'], 27)
         self.assertEqual(actor, None)
 
     def test_producer_delete_movies(self):
         """
         Tests casting producer cannot delete movies
         """
-        response = self.client().delete('/movies/2',
+        response = self.client().delete('/movies/19',
                                         headers=self.casting_producer)
         data = json.loads(response.data)
-        movie = Movie.query.filter(Movie.id == 25).one_or_none()
+        movie = Movie.query.filter(Movie.id == 19).one_or_none()
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(data['success'], True)
-        self.assertEqual(data['delete'], 2)
+        self.assertEqual(data['delete'], 19)
         self.assertEqual(movie, None)
 
 
