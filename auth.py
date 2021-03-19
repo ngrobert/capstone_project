@@ -10,7 +10,6 @@ from jose import jwt
 
 
 # auth0 used to add authorization and authentication to app
-print("OS", os.environ)
 AUTH0_DOMAIN = os.environ.get('AUTH0_DOMAIN')
 ALGORITHMS = os.environ.get['ALGORITHMS']
 API_AUDIENCE = os.environ.get('API_AUDIENCE')

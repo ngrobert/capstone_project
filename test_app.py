@@ -26,56 +26,13 @@ class CastingAgencyTestCase(unittest.TestCase):
 
         # auth tokens for respective roles
         self.casting_assistant = {
-            "Authorization": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Im1CSk5ucHk5dlNJQXpuaU1NYUF4ViJ9.eyJpc3MiOiJodHRwczovL2Rldi04ZnhjdGxlYy51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NjA0NDMwZDAwZDlmNzEwMDcwZWU2NGM3IiwiYXVkIjoiaHR0cHM6Ly9jYXN0aW5nLWFnZW5jeS8iLCJpYXQiOjE2MTYxMDE2NzcsImV4cCI6MTYxNjE3MzY3NywiYXpwIjoiR2hyT282c3FkU2paY2txMnB1QlB2d1ZacmdrZmR5M1YiLCJzY29wZSI6IiIsInBlcm1pc3Npb25zIjpbImdldDphY3RvcnMiLCJnZXQ6bW92aWVzIl19.PvLB3ta5IaxBKtNtkVS_VH6tBhrwl6mmHndqIj5Ae4U_HrCNwkvu9SB7Qx98k6BuuHudMdW5X8vb8j-8vxgLfebvM0tGztCr2YFJ3qCtZ7zLlQgzxjtquIjobw7dAQuI3ZS3IAQd5shnvxNIKoS50ISYltxPt9f7kngi6l6oW7VLniMcJzi7wIUB2lo9d22OzwtCeONqM8eXFEPAY6Cgk9InGY1IECQikLHm_YIKRqiAw9GNnAjxJmO3xpDkBjGtwUzA-v7xzI8ELmbz7Yl7sybntdtnpuUbVkklTK5M37QOYllMkZxRzgCYaKC2zs-K48Krd8OfJxKs9R_HAyrwOQ"
+            "Authorization": "Bearer {}".format(os.environ.get('ASSISTANT_TOKEN'))
         }
         self.casting_director = {
-            "Authorization": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXV"
-                             "CIsImtpZCI6Im1CSk5ucHk5dlNJQXpuaU1NYUF4"
-                             "ViJ9.eyJpc3MiOiJodHRwczovL2Rldi04ZnhjdG"
-                             "xlYy51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0"
-                             "aDB8NWY3NzUzNWRiNDk4ZTIwMDZiOTQyNDNkI"
-                             "iwiYXVkIjoiaHR0cHM6Ly9jYXN0aW5nLWFnZW5"
-                             "jeS8iLCJpYXQiOjE2MTYwMzM5NDAsImV4cCI6M"
-                             "TYxNjEwNTk0MCwiYXpwIjoiR2hyT282c3FkU2p"
-                             "aY2txMnB1QlB2d1ZacmdrZmR5M1YiLCJzY29wZ"
-                             "SI6IiIsInBlcm1pc3Npb25zIjpbImRlbGV0ZTp"
-                             "hY3RvcnMiLCJnZXQ6YWN0b3JzIiwiZ2V0Om1vd"
-                             "mllcyIsInBhdGNoOmFjdG9ycyIsInBhdGNoOm1"
-                             "vdmllcyIsInBvc3Q6YWN0b3JzIl19.iixr8lem"
-                             "lQk1_TdDBKGpcvgkR_yfFk_cXhMKAvUh8F3Im"
-                             "Y4z0FaMDRuj0NRbJlWLFH2rr7czcjNY23_1bf"
-                             "xa2gNrPmCG-XRMwIjrw64OG7dE77vVkeHGZXS"
-                             "vaMh5bkWhVzD6gx1cwK8UwX8NICuBa11WeNWvX"
-                             "BeZE-QbM5mMVfqViGS_NLk1URW93WTsS_E7IX"
-                             "y_khGt_8dcWvdmsn-dhmvz24BBA3o02JFArA5"
-                             "2M6xZa5uHwEaWaCexH6dGU-tJlQMVmrtMGxVK"
-                             "FoiRUHbilyCAxJbgcGVQdmWHehKCBWvrhcNCS"
-                             "P99HSy9Fy6xz2S0XljCCCojSyKQVkgjjKkzMQ"
+            "Authorization": "Bearer {}".format(os.environ.get('DIRECTOR_TOKEN'))
         }
         self.casting_producer = {
-            "Authorization": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCI"
-                             "sImtpZCI6Im1CSk5ucHk5dlNJQXpuaU1NYUF4ViJ9."
-                             "eyJpc3MiOiJodHRwczovL2Rldi04ZnhjdGxlYy51cy"
-                             "5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NWY3NzUz"
-                             "OWNiYmJkODIwMDY4NjlmNDZjIiwiYXVkIjoiaHR0c"
-                             "HM6Ly9jYXN0aW5nLWFnZW5jeS8iLCJpYXQiOjE2MT"
-                             "YwMzM4MDcsImV4cCI6MTYxNjEwNTgwNywiYXpwIjo"
-                             "iR2hyT282c3FkU2paY2txMnB1QlB2d1ZacmdrZmR5"
-                             "M1YiLCJzY29wZSI6IiIsInBlcm1pc3Npb25zIjpbI"
-                             "mRlbGV0ZTphY3RvcnMiLCJkZWxldGU6bW92aWVzIi"
-                             "wiZ2V0OmFjdG9ycyIsImdldDptb3ZpZXMiLCJwYXR"
-                             "jaDphY3RvcnMiLCJwYXRjaDptb3ZpZXMiLCJwb3N0"
-                             "OmFjdG9ycyIsInBvc3Q6bW92aWVzIl19.hBycF03"
-                             "9mk2pUe2kYv-kBB_EX3VnSRZpXDz42sjQysjVKIw"
-                             "ht-p_5sVCoDs3EdhzB_rxoGX6Pj31frRW_GJKynD"
-                             "bwpzG-Jk2N4wG-UtkKL-uPsobB_75G2t8rZQoBzF"
-                             "av4Gzzob8LVkqhvXXtvGrR0cUE6ibgMiHjqX75xE"
-                             "r-gn73e8zninA3uPLfvPBTjJ_Eeyqdit4YiOJFS1"
-                             "3xDpm7YoWf9PubIydcFhs-JmAMye_m-9u-LFF8H"
-                             "Lei6G01viQTAJmvWau5TD0yWfahzobpT7TJS--2"
-                             "0bqHoJ2SJRHZVKfxE-ptO97dogTTvuzBET_H1RE"
-                             "-kGKbEdh1nAYLpEvSQ"
-        }
+            "Authorization": "Bearer {}".format(os.environ.get('PRODDUCER_TOKEN'))
 
         self.new_actor = {
             "name": "Tom Hanks",
